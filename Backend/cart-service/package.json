@@ -1,5 +1,5 @@
 {
-  "name": "product-service",
+  "name": "cart-service",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,20 +10,16 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "@google-cloud/storage": "^7.16.0",
-    "csv-parser": "^3.2.0",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "firebase-admin": "^13.4.0",
-    "knex": "^3.1.0",
-    "multer": "^2.0.1",
-    "mysql": "^2.18.1",
-    "streamifier": "^0.1.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
-  },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

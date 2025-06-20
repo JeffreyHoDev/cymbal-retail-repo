@@ -30,3 +30,6 @@ electronics
 }
 
 
+name    | brand     | image
+product1              image1.png
+
