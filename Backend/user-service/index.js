@@ -2,10 +2,11 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swaggerConfig'); // Import your Swagger configuration
 
-
+require('dotenv').config()
+// Initialize the Express application
 const app = express();
 const port = 3000;
-
+console.log(process.env.AIVEN_MYSQL_CONNECTION_STRING);
 // Serve Swagger UI at a specific route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());

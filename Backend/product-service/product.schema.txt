@@ -1,0 +1,32 @@
+clothing:
+{
+    'name',
+    'brand',
+    'price',
+    'attributes': {
+        color: [red, blue, green],    
+    },
+    description,
+    sub-category: [topwear, long sleeve],
+    rating (1 to 10)
+}
+
+
+
+electronics
+{
+    'name',
+    'brand',
+    price,
+    attributes: {
+        color: [green, blue],
+        ramspec: [512GB, 1TB],
+        disktype: [HDD, SSD],
+        size: [15", 16"]
+    },
+    description,
+    sub-category: 'laptop'/ 'desktop'/ 'monitor',
+    rating (1 to 10)
+}
+
+
