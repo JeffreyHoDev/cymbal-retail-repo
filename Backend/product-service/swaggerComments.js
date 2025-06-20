@@ -89,11 +89,17 @@ const swaggerComments = {
     getSpecificProduct: `
     /**
      * @swagger
-     * /getSpecificProduct/{productid}:
+     * /getSpecificProduct/{category}/{productid}:
      *   get:
      *     summary: Retrieve details of a specific product. User- Owner, Customer
      *     tags: [Products]
      *     parameters:
+     *       - in: path
+     *         name: category
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The category of the product to retrieve
      *       - in: path
      *         name: productid
      *         required: true
