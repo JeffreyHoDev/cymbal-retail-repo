@@ -6,28 +6,30 @@ require('dotenv').config();
 // const firestore = new Firestore({ project });
 
 async function main() {
-    const collections = await db.listCollections();
+    const collections = (await db.listCollections()).filter(col => col.id !== 'analytics_for_popular'); // Exclude the analytics_for_popular collection
     
     const outputFile = fs.createWriteStream('products_for_search.jsonl', { encoding: 'utf8' });
     for (const collection of collections) {
-        const snapshot = await collection.get()
 
-        snapshot.forEach(doc => {
-            const product = doc.data();
-            if (!product.name || !product.description || !product.category) {
-                console.warn(`Skipping document ${doc.id} in collection ${collection.id} due to missing required fields.`);
-                return;
-            }
-            
-            const outputLine = JSON.stringify({
-                id: doc.id,
-                // The 'content' field is what Vertex AI Search will primarily use for semantic matching.
-                content: `Product name: ${product.name}. Description: ${product.description}. Category: ${product.category}.`,
-                // You can also include structured data for filtering.
-                jsonData: JSON.stringify(product)
+            const snapshot = await collection.get()
+    
+            snapshot.forEach(doc => {
+                const product = doc.data();
+                if (!product.name || !product.description || !product.category) {
+                    console.warn(`Skipping document ${doc.id} in collection ${collection.id} due to missing required fields.`);
+                    return;
+                }
+                
+                const outputLine = JSON.stringify({
+                    id: doc.id,
+                    // The 'content' field is what Vertex AI Search will primarily use for semantic matching.
+                    content: `Product name: ${product.name}. Description: ${product.description}. Category: ${product.category}.`,
+                    // You can also include structured data for filtering.
+                    jsonData: JSON.stringify(product)
+                });
+                outputFile.write(outputLine + '\n');
             });
-            outputFile.write(outputLine + '\n');
-        });
+
     }
 
     outputFile.end();
