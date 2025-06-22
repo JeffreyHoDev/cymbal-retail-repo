@@ -1,0 +1,5 @@
+For the searching to work, the following has to be done.
+
+1. The script need to export a jsonl file and upload to bucket
+2. Then inside vertex ai data to import the latest jsonl file
+3. Then discovery engine can crawl the data for searching purpose
