@@ -22,13 +22,18 @@ const upload = multer({ storage: multer.memoryStorage() });
 app.get('/getProducts', async (req, res) => {
     // Here will need to fetch the products from the database
     try {
-        const collections = await db.listCollections();
+        const collections = (await db.listCollections()).filter(col => col.id !== 'analytics_for_popular');; // Exclude the analytics_for_popular collection
         const products = {};
 
         await Promise.all(collections.map(async (collection) => {
+
             const snapshot = await collection.get();
             const data = [];
-            snapshot.forEach(doc => data.push(doc.data()));
+            snapshot.forEach(doc => {
+                let productData = doc.data()
+                productData.id = doc.id; // Add document ID to the data
+                data.push(productData)
+            });
             products[collection.id] = data;
         }));
 
@@ -45,7 +50,7 @@ app.get('/getApprovedProducts', async (req, res) => {
     // Here will need to fetch the products from the database that have been approved
     // Use Firestore query to get all products in all collections where status is 'approved'
         try {
-            const collections = await db.listCollections();
+            const collections = (await db.listCollections()).filter(col => col.id !== 'analytics_for_popular');; // Exclude the analytics_for_popular collection
             const approvedProducts = {};
 
         await Promise.all(
@@ -75,7 +80,8 @@ app.get('/getHaventApprovedProducts', async (req, res) => {
     // Here will need to fetch the products from the database that haven't been approved yet
     // Use Firestore query to get all products in all collections where status is 'pending approval'
         try {
-            const collections = await db.listCollections();
+            const collections = (await db.listCollections()).filter(col => col.id !== 'analytics_for_popular');; // Exclude the analytics_for_popular collection
+
             const pendingProducts = {};
 
         await Promise.all(
@@ -114,6 +120,24 @@ app.get('/getSpecificProduct/:category/:productid', async (req, res) => {
         }
         const productData = data.data();
         productData.id = productid; // Add document ID to the data 
+
+        // Update the product data to analytics to increase the count of views
+        const analyticsRef = db.collection('analytics_for_popular').doc(productid);
+        if (!analyticsRef) {
+            productData.viewCount = 1
+            await db.collection('analytics_for_popular').doc(productid).set(productData);
+        }else {
+            const analyticsData = await analyticsRef.get();
+            if (analyticsData.exists) {
+                const currentData = analyticsData.data();
+                currentData.viewCount = (currentData.viewCount || 0) + 1; // Increment view count
+                await analyticsRef.set(currentData);
+            } else {
+                productData.viewCount = 1; // Initialize view count
+                await analyticsRef.set(productData);
+            }
+        }
+
         res.json({
             message: `Product ${productid} details`,
             item: productData

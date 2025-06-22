@@ -1,4 +1,4 @@
-const generativeModel = require('./vertexai.config'); // Import the Vertex AI model
+const {generativeModel, reasoningGenerativeModel} = require('./vertexai.config'); // Import the Vertex AI model
 
 async function enhanceWithImage(product) {
   const prompt = `
@@ -26,7 +26,26 @@ async function enhanceWithImage(product) {
   return formattedResponse;
 }
 
+async function provideReason(information, query) {
+  const prompt = `
+      Below is the information from the discovery engine which it find which product is popular based on the query:
+      ${JSON.stringify(information, null, 2)}
+      The query that the user is providing: "${query}"
+    `;
 
+  const result = await reasoningGenerativeModel.generateContent({
+    contents: [
+      {
+        role: 'user',
+        parts: [{ text: prompt }]
+      }
+    ]
+  });
+
+  const textResponse = result.response.candidates[0].content.parts[0].text;
+  let formattedResponse = textResponse.replace(/```json\s*|```/g, '').trim();
+  return JSON.parse(formattedResponse);
+}
 
 // async function multiPartContent(product) {
 //     const filePart = {file_data: {file_uri: `${product.image_url}`, mime_type: "image/jpeg"}};
@@ -69,4 +88,4 @@ async function enhanceWithImage(product) {
 
 
 
-module.exports = enhanceWithImage;
+module.exports = {enhanceWithImage, provideReason};

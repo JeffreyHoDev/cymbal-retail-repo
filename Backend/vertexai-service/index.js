@@ -1,9 +1,10 @@
 const express = require('express');
 
 const db = require('./firestore'); // Import Firestore configuration
-const enhanceWithImage = require('./vertexai.util'); // Import the image enhancement utility
+const { enhanceWithImage, provideReason } = require('./vertexai.util'); // Import the image enhancement utility
 const { SearchServiceClient } = require('@google-cloud/discoveryengine').v1;
 const generateMultipleImages = require('./image_gen'); // Import the image generation utility
+
 require('dotenv').config()
 
 const app = express();
@@ -98,6 +99,59 @@ app.post('/generateImage', async (req, res) => {
     } catch (error) {
         console.error('Error generating image:', error);
         res.status(500).send({ error: 'An error occurred while generating the image.' });
+    }
+
+})
+
+app.post('/recommend', async (req, res) => {
+    const { query } = req.body;
+    const client = new SearchServiceClient({
+        keyFilename: './vertex-ai.sa.json'
+    });
+    if (!query) {
+        return res.status(400).send({ error: 'Query is required.' });
+    }
+
+    const servingConfig = client.projectLocationDataStoreServingConfigPath(
+        process.env.PROJECT_ID,
+        process.env.SEARCH_APP_LOCATION,
+        process.env.POPULARITY_DATASTORE_ID,
+        'default_config' // Use the default serving config
+    );
+
+    try {
+        const response = await client.search({
+            servingConfig: servingConfig,
+            query: query,
+            orderBy: "customAttributes.view_count.numericValue desc", // Order by view count
+            queryExpansionSpec: {
+                condition: 'DISABLED',
+            },
+            spellCorrectionSpec: {
+                mode: 'AUTO',
+            }
+        });
+        const information = response[0]
+        const jsonDataArray = information.map(data => {
+            return JSON.parse(data.document.structData.fields.jsonData.stringValue);
+        })
+
+        // // Extract the original product JSON from the results
+        // const results = response.map(result => {
+        //     const doc = result.document;
+        //     // The original product data is in the 'jsonData' field created.
+        //     return {
+        //         id: doc.id,
+        //         ...JSON.parse(doc.structData.fields.jsonData.stringValue)
+        //     };
+        // });
+
+        const reason = await provideReason(jsonDataArray, query);
+        res.json(reason);
+
+    } catch (error) {
+        console.error('Error during search:', error);
+        res.status(500).send({ error: 'An error occurred during the search.' });
     }
 
 })
