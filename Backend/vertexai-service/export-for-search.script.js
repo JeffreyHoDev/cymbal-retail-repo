@@ -11,12 +11,14 @@ async function main() {
     const outputFile = fs.createWriteStream('products_for_search.jsonl', { encoding: 'utf8' });
     for (const collection of collections) {
         const snapshot = await collection.get()
+
         snapshot.forEach(doc => {
             const product = doc.data();
             if (!product.name || !product.description || !product.category) {
                 console.warn(`Skipping document ${doc.id} in collection ${collection.id} due to missing required fields.`);
                 return;
             }
+            
             const outputLine = JSON.stringify({
                 id: doc.id,
                 // The 'content' field is what Vertex AI Search will primarily use for semantic matching.
