@@ -291,7 +291,78 @@ app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('imag
 });
 
 
+app.post('/uploadCSVandImages', upload.fields([{ name: 'csv', maxCount: 1 }, { name: 'images', maxCount: 90 }]), async (req, res) => {
+    if (!req.files || !req.files['csv'] || req.files['csv'].length === 0) {
+        return res.status(400).json({ error: 'No CSV file uploaded' });
+    }
 
+    const results = [];
+    const stream = req.files['csv'][0].buffer;
+    const images = req.files['images'] || [];
+
+    try {
+        // Parse CSV buffer
+        const readable = streamifier.createReadStream(stream);
+
+        readable
+            .pipe(csvParser())
+            .on('data', (data) => results.push(data))
+            .on('end', async () => {
+                await Promise.all(
+                    results.map(async (row) => {
+                        const imageFilename = row["Image_Link"];
+                        if (!imageFilename) return;
+
+                        const matchedImage = images.find(file => file.originalname === imageFilename);
+                        if (!matchedImage) return;
+
+                        const blob = bucket.file(`${row["Product_SKU"]}-${matchedImage.originalname}`);
+                        const stream = blob.createWriteStream({
+                            metadata: { contentType: matchedImage.mimetype },
+                        });
+
+                        stream.end(matchedImage.buffer);
+
+                        row["Image_url"] = [`https://storage.googleapis.com/${bucket.name}/${blob.name}`];
+
+                        try {
+                            const response = await fetch(`http://localhost:3000/addProduct`, {
+                                method: 'POST',
+                                headers: { "Content-Type": 'application/json' },
+                                body: JSON.stringify({
+                                    "name": row["Product_Name"],
+                                    "sku": row["Product_SKU"],
+                                    "price": row["Product_Price"],
+                                    "image_url": row["Image_url"],
+                                    "description": row["Product_Description"],
+                                    "category": row["Product_Category"],
+                                    "quantity": Number(row["Quantity"]),
+                                    "date": row["Date"],
+                                }),
+                            });
+
+                            if (!response.ok) {
+                                console.error(`Failed to add product for SKU ${row["Product_SKU"]}: ${response.statusText}`);
+                            }
+                        } catch (error) {
+                            console.error('Error updating product to Firestore:', error);
+                        }
+                    })
+                );
+
+                res.json({
+                    message: 'CSV and images processed successfully',
+                    rowCount: results.length,
+                    sample: results.slice(0, 5),
+                });
+            })
+            .on('error', (err) => {
+                res.status(500).json({ error: 'Failed to parse CSV', details: err.message });
+            });
+    } catch (e) {
+        return res.status(400).json({ error: 'Unexpected error', details: e.message });
+    }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -2,7 +2,7 @@ const express = require('express');
 
 const db = require('./firestore'); // Import Firestore configuration
 const { enhanceWithImage, provideReason } = require('./vertexai.util'); // Import the image enhancement utility
-const { SearchServiceClient } = require('@google-cloud/discoveryengine').v1;
+const { SearchServiceClient, ConversationalSearchServiceClient, RecommendationServiceClient } = require('@google-cloud/discoveryengine').v1;
 const generateMultipleImages = require('./image_gen'); // Import the image generation utility
 
 require('dotenv').config()
@@ -103,13 +103,31 @@ app.post('/generateImage', async (req, res) => {
 
 })
 
-app.post('/recommend', async (req, res) => {
-    const { query } = req.body;
+app.post('/chat', async (req, res) => {
+    const { query, previousQuery } = req.body;
+    /*
+        Structure of previousQuery:
+        [{
+            role: 'user' | 'model',
+            text: 'previous text'
+        }]
+    */
     const client = new SearchServiceClient({
         keyFilename: './vertex-ai.sa.json'
     });
     if (!query) {
         return res.status(400).send({ error: 'Query is required.' });
+    }
+
+    let prompt = query
+    if(previousQuery) {
+        prompt = `
+            Current User Query: ${query}
+            Previous Conversation:\n ${previousQuery.map((q, index) => {
+                return `${q.role}: ${q.text}\n`;
+            })}
+            The order of the previous conversation is important, so please keep it in mind. Top is oldest, bottom is latest.
+        `
     }
 
     const servingConfig = client.projectLocationDataStoreServingConfigPath(
@@ -122,10 +140,9 @@ app.post('/recommend', async (req, res) => {
     try {
         const response = await client.search({
             servingConfig: servingConfig,
-            query: query,
-            orderBy: "customAttributes.view_count.numericValue desc", // Order by view count
+            query: prompt,
             queryExpansionSpec: {
-                condition: 'DISABLED',
+                condition: 'AUTO',
             },
             spellCorrectionSpec: {
                 mode: 'AUTO',

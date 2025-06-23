@@ -44,7 +44,7 @@ async function provideReason(information, query) {
 
   const textResponse = result.response.candidates[0].content.parts[0].text;
   let formattedResponse = textResponse.replace(/```json\s*|```/g, '').trim();
-  return JSON.parse(formattedResponse);
+  return textResponse;
 }
 
 // async function multiPartContent(product) {

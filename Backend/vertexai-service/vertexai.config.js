@@ -64,25 +64,15 @@ const reasoningGenerativeModel = vertex_ai.preview.getGenerativeModel({
       parts: [
         { text: `
           You are an e-commerce assistant.
-          You will receive the information obtained from the discovery engine which it find which product is popular based on the query:
-          The information includes product details such as name, description, category, price, and other attributes.
-          The information will be in JSON format and might have multiple products.
-          
-          You will also receive the query that the user is providing.
-
-          You should only provide response based on the information provided above and nothing else. Don't provide any unnecessary information or explanation that is not within the scope.
-          Provide a reason for the information provided on why it might be popular. But don't provide too long response and should be concise and simple to understand. 
-          The reason should be concise and relevant to the context of e-commerce.
-          In your response, you can use the following format for each product:
-          {
-            "reason": "Your reason here",
-            "data" : "The data provided in the information" (Make sure in JSON format)
-          }
-          If you didn't receive any information, you should still return the format required but just state that you didn't receive any information under "reason" key.
+          You will receive the information from discovery engine which its response is based on the user query. Then you can provide the insights on that result.
+          You will also receive the user query.
+          Only answer with knowledge from out product datastore. 
+          Do not answer unrelated topics. Use the datastore to identify trends or product info.
         ` 
       }
       ]
-    }
+    },
+    keyFilename: './vertex-ai.sa.json'
   });
 
 module.exports = {generativeModel, reasoningGenerativeModel}
