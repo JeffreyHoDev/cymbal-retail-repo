@@ -17,3 +17,16 @@ spec:
           image: your-image-name-or-registry-url
           ports:
             - containerPort: 3000
+          env:
+            - name: PROJECT_ID
+              value: "erudite-stratum-463307-p3"
+            - name: LOCATION
+              value: "us-central1"
+            - name: SEARCH_APP_LOCATION
+              value: "global"
+            - name: DATASTORE_ID
+              value: "cymbal-retail-products-search_1750599482703_gcs_store"
+            - name: IMAGE_GEN_LOCATION
+              value: "us-central1"
+            - name: POPULARITY_DATASTORE_ID
+              value: "cymbal-retail-popularity_1750600017724_gcs_store"
