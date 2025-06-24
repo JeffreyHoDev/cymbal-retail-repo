@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cymbal-retail-product-backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: cymbal-retail-product-service-deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+# After create this, for internal communication can use cymbal-retail-product-backend-service.default.svc.cluster.local

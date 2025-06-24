@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cymbal-retail-product-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cymbal-retail-product-service-deployment
+  template:
+    metadata:
+      labels:
+        app: cymbal-retail-product-service-deployment
+    spec:
+      containers:
+        - name: cymbal-retail-product-service-deployment
+          image: your-image-name-or-registry-url
+          ports:
+            - containerPort: 3000

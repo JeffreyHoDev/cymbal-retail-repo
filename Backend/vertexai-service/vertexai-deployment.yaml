@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cymbal-retail-vertexai-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cymbal-retail-vertexai-service-deployment
+  template:
+    metadata:
+      labels:
+        app: cymbal-retail-vertexai-service-deployment
+    spec:
+      containers:
+        - name: cymbal-retail-vertexai-service-deployment
+          image: your-image-name-or-registry-url
+          ports:
+            - containerPort: 3000
