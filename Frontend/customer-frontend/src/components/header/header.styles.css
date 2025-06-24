@@ -1,0 +1,50 @@
+.header {
+width: 100vw;;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 80px;
+  background: #ffffff; /* Change this to match your logo's background color */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.header__logo img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.header__nav ul {
+  display: flex;
+  color: black;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__nav a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.header__nav a:hover {
+  color: #ffeb3b; /* Accent color on hover, adjust as needed */
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 700px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+    gap: 16px;
+  }
+  .header__nav ul {
+    gap: 12px;
+  }
+}

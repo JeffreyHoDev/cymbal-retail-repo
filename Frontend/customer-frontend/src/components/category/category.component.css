@@ -1,0 +1,52 @@
+.category-component h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 24px 0 16px 0;
+  color: #222;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.category-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  width: 240px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.category-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.category-card__image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain; /* Keeps aspect ratio */
+  display: block;
+  margin: 0 auto;
+}
+
+.category-card__content {
+  padding: 16px;
+}
+
+.category-card__title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #222;
+}

@@ -1,0 +1,118 @@
+.category-page {
+  text-align: center;
+}
+
+.category-page h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1976d2; /* Use your brand or accent color */
+  text-align: center;
+  margin: 32px 0 24px 0;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  position: relative;
+  display: inline-block;
+}
+
+.category-page h1::after {
+  content: '';
+  display: block;
+  margin: 12px auto 0 auto;
+  width: 60%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+}
+
+.category-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.category-product-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.18s, box-shadow 0.18s;
+  padding: 0 0 16px 0;
+}
+
+.category-product-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.category-product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: #f7f7f7;
+  border-bottom: 1px solid #eee;
+}
+
+.category-product-content {
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-product-title {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #1976d2;
+}
+
+.category-product-description {
+  margin: 0 0 16px 0;
+  color: #444;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.category-product-button {
+  padding: 8px 20px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.category-product-button:hover {
+  background: #125ea2;
+}
+
+.category-product-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.rating-image {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.category-product-rating {
+  font-size: 1rem;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+}

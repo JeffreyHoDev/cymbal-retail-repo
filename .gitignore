@@ -1,4 +1,14 @@
 */*/node_modules
+*/*/*/node_modules
+*/*/dist
+*/*/build
+*/*/coverage
+*/*/logs
+*/*/tmp
+*/*/.cache
+*/*/.vscode
 */*/.env
+*/*/*/.env
 */*/serviceAccountKey.json
 */*/*.sa.json
+images/
