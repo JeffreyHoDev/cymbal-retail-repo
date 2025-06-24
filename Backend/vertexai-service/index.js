@@ -8,7 +8,7 @@ const cors = require('cors'); // Import CORS middleware
 require('dotenv').config()
 
 const app = express();
-const port = 3002;
+const port = 3000;
 
 app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
