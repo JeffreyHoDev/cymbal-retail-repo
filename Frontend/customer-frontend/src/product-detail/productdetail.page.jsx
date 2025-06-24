@@ -13,6 +13,7 @@ const ProductDetailPage = () => {
         fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/getSpecificProduct/${category}/${productID}`)
             .then(response => response.json())
             .then(data => {
+                console.log("Fetched product data:", data);
                 // Handle the fetched product data
                 setProduct(data.item);
             })

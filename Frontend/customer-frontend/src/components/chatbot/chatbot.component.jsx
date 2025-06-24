@@ -75,7 +75,7 @@ const Chatbot = () => {
               onKeyDown={e => e.key === 'Enter' && handleSend()}
               placeholder="Type your message..."
             />
-            <button onClick={handleSend}>Send</button>
+            <button className={`${loading ? 'disable-btn' : ''}`} disabled={loading} onClick={handleSend}>Send</button>
           </div>
         </div>
       ) : (

@@ -24,7 +24,6 @@ const ProductsForYou = () => {
                                 <span className="product-rating">{product.rating}</span>
                             </div>
                             <p className="product-price">${product.price}</p>
-
                         </div>
                     </NavLink>
                 ))}

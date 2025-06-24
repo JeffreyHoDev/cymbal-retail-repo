@@ -110,7 +110,6 @@ app.get('/getHaventApprovedProducts', async (req, res) => {
 
 app.get('/getSpecificProduct/:category/:productid', async (req, res) => {
     const {category, productid} = req.params;
-
     // Here will need to fetch the product from the database using productId and it is approved
     try {
         const docRef = db.collection(category).doc(productid);
@@ -121,23 +120,6 @@ app.get('/getSpecificProduct/:category/:productid', async (req, res) => {
         const productData = data.data();
         productData.id = productid; // Add document ID to the data 
 
-        // Update the product data to analytics to increase the count of views
-        const analyticsRef = db.collection('analytics_for_popular').doc(productid);
-        if (!analyticsRef) {
-            productData.viewCount = 1
-            await db.collection('analytics_for_popular').doc(productid).set(productData);
-        }else {
-            const analyticsData = await analyticsRef.get();
-            if (analyticsData.exists) {
-                const currentData = analyticsData.data();
-                currentData.viewCount = (currentData.viewCount || 0) + 1; // Increment view count
-                await analyticsRef.set(currentData);
-            } else {
-                productData.viewCount = 1; // Initialize view count
-                await analyticsRef.set(productData);
-            }
-        }
-
         res.json({
             message: `Product ${productid} details`,
             item: productData
@@ -147,21 +129,21 @@ app.get('/getSpecificProduct/:category/:productid', async (req, res) => {
     }
 })
 
-// app.post('/addProduct', (req, res) => {
-//     const { category } = req.body;
-//     req.body.status = 'pending approval'; // Default status for new products
-//     // Here will need to add the product to the database, default status is 'pending approval'
-//     const docRef = db.collection(category).doc(); // No argument = auto-ID
-//     docRef.set(req.body)
-//     .then((response) => {
-//         res.json({
-//             message: `Product added successfully`,
-//         })
-//     })
-//     .catch((error) => {
-//         res.status(500).json({ error: 'Failed to add product', details: error.message });
-//     })
-// })
+app.post('/addProduct', (req, res) => {
+    const { category } = req.body;
+    req.body.status = 'pending approval'; // Default status for new products
+    // Here will need to add the product to the database, default status is 'pending approval'
+    const docRef = db.collection(category).doc(); // No argument = auto-ID
+    docRef.set(req.body)
+    .then((response) => {
+        res.json({
+            message: `Product added successfully`,
+        })
+    })
+    .catch((error) => {
+        res.status(500).json({ error: 'Failed to add product', details: error.message });
+    })
+})
 
 app.post('/approveProduct', (req, res) => {
     const { id, category } = req.body;
@@ -247,7 +229,7 @@ app.post('/uploadCSV', upload.single('csv'), (req, res) => {
         });
 })
 
-app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('images', 90), async (req, res) => {
+app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('images', 150), async (req, res) => {
   // req.files contains the images
   // req.body.data contains the JSON string
 
@@ -287,6 +269,7 @@ app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('imag
                                 "image_url": row["Image_url"],
                                 "description": row["Product_Description"],
                                 "category": row["Product_Category"],
+                                "brand": row["Brand"],
                                 "quantity": Number(row["Quantity"]),
                                 "date": row["Date"],
                             })
@@ -313,7 +296,7 @@ app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('imag
 });
 
 
-app.post('/uploadCSVandImages', upload.fields([{ name: 'csv', maxCount: 1 }, { name: 'images', maxCount: 90 }]), async (req, res) => {
+app.post('/uploadCSVandImages', upload.fields([{ name: 'csv', maxCount: 1 }, { name: 'images', maxCount: 150 }]), async (req, res) => {
     if (!req.files || !req.files['csv'] || req.files['csv'].length === 0) {
         return res.status(400).json({ error: 'No CSV file uploaded' });
     }
@@ -357,6 +340,7 @@ app.post('/uploadCSVandImages', upload.fields([{ name: 'csv', maxCount: 1 }, { n
                                     "price": row["Price"],
                                     "image_url": row["Image_url"],
                                     "description": row["Product_Description"],
+                                    "brand": row["Brand"],
                                     "category": row["Product_Category"],
                                     "quantity": Number(row["Quantity"]),
                                     "date": row["Date"],

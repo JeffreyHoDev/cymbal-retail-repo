@@ -19,11 +19,12 @@ async function main() {
                     console.warn(`Skipping document ${doc.id} in collection ${collection.id} due to missing required fields.`);
                     return;
                 }
+                product.product_id = doc.id; // Add the document ID to the product data
                 
                 const outputLine = JSON.stringify({
-                    id: doc.id,
+                    product_id: doc.id,
                     // The 'content' field is what Vertex AI Search will primarily use for semantic matching.
-                    content: `Product name: ${product.name}. Description: ${product.description}. Category: ${product.category}.`,
+                    content: `Product ID: ${doc.id}. Product name: ${product.name}. Description: ${product.description}. Category: ${product.category}.`,
                     // You can also include structured data for filtering.
                     jsonData: JSON.stringify(product)
                 });

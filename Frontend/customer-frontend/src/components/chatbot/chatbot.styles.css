@@ -110,3 +110,13 @@
 .chatbot-input-row button:hover {
   background: #125ea2;
 }
+
+.disable-btn {
+  background: #cccccc !important;
+  color: #888888 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  box-shadow: none;
+  border: none;
+  pointer-events: none;
+}

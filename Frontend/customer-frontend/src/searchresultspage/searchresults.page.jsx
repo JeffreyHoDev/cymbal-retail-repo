@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../AppContext";
 import starIcon from '../images/star.png'; // Assuming you have a star icon for ratings
 import CircularProgress from '@mui/material/CircularProgress';
+import { NavLink } from "react-router-dom";
 import './searchresults.styles.css'; // Assuming you have some styles for the search results page
 
 const SearchResultsPage = () => {
@@ -36,22 +37,28 @@ const SearchResultsPage = () => {
   return (
     <div className="search-results-page">
       <h1>Search Results (Powered by Vertex AI)</h1>
-      {/* Additional components and logic for displaying search results can be added here */}
         <div className="product-list">
             {
-                loading ? <CircularProgress /> : searchResults.map((product, index) => (
-                    <div key={index} className="product-card">
-                        <img src={product.image_url[0]} alt={product.name} />
-                        <h3>{product.name}</h3>
-                        <p>{product.description.slice(0, 100)}...</p>
-                        <div className="product-rating-row">
-                            <img className="rating-image" src={starIcon} alt={product.rating} />
-                            <span className="product-rating">{product.rating}</span>
+                loading ? <CircularProgress /> 
+                : searchResults.length > 0 ? (searchResults.map((product, index) => {
+                    console.log("Product:", product);
+                    return (
+                        <div key={index} className="product-card">
+                            <img src={product.image_url[0]} alt={product.name} />
+                            <h3>{product.name}</h3>
+                            <p>{product.description.slice(0, 100)}...</p>
+                            <div className="product-rating-row">
+                                <img className="rating-image" src={starIcon} alt={product.rating} />
+                                <span className="product-rating">{product.rating}</span>
+                            </div>
+                            <p className="product-price">${product.price}</p>
+                            <NavLink to={`/category/${product.category}/product/${product.product_id}`} className="nav-button">Details</NavLink>
                         </div>
-                        <p className="product-price">${product.price}</p>
-
-                    </div>
-                ))}
+                    );
+                })) : (
+                    <p></p>
+                )
+            }
         </div>
     </div>
   );
