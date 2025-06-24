@@ -9,12 +9,12 @@ const fs = require('fs');
 const path = require('path');
 const streamifier = require('streamifier');
 const bucket = require('./bucket.config'); // Import your GCS bucket configuration
-
+const cors = require('cors');
 require('dotenv').config()
 
 const app = express();
 const port = 3000;
-
+app.use(cors());
 // Serve Swagger UI at a specific route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
@@ -147,20 +147,42 @@ app.get('/getSpecificProduct/:category/:productid', async (req, res) => {
     }
 })
 
-app.post('/addProduct', (req, res) => {
-    const { category } = req.body;
-    req.body.status = 'pending approval'; // Default status for new products
-    // Here will need to add the product to the database, default status is 'pending approval'
-    const docRef = db.collection(category).doc(); // No argument = auto-ID
-    docRef.set(req.body)
-    .then((response) => {
+// app.post('/addProduct', (req, res) => {
+//     const { category } = req.body;
+//     req.body.status = 'pending approval'; // Default status for new products
+//     // Here will need to add the product to the database, default status is 'pending approval'
+//     const docRef = db.collection(category).doc(); // No argument = auto-ID
+//     docRef.set(req.body)
+//     .then((response) => {
+//         res.json({
+//             message: `Product added successfully`,
+//         })
+//     })
+//     .catch((error) => {
+//         res.status(500).json({ error: 'Failed to add product', details: error.message });
+//     })
+// })
+
+app.post('/approveProduct', (req, res) => {
+    const { id, category } = req.body;
+    if (!id || !category) {
+        return res.status(400).json({ error: 'Product ID and category are required' });
+    }
+    // Create a copy of req.body to avoid modifying the original request object directly if not needed elsewhere
+    const dataToStore = { ...req.body };
+    dataToStore.status = 'approved'; // Update status to approved
+
+    const docRef = db.collection(category).doc(id);
+
+    docRef.set(dataToStore, { merge: true }) // Use merge to update only the status
+    .then(() => {
         res.json({
-            message: `Product added successfully`,
-        })
+            message: `Product ${id} approved successfully`,
+        });
     })
     .catch((error) => {
-        res.status(500).json({ error: 'Failed to add product', details: error.message });
-    })
+        res.status(500).json({ error: 'Failed to approve product', details: error.message });
+    });
 })
 
 app.post('/updateProduct', (req, res) => {
@@ -261,7 +283,7 @@ app.post('/uploadImagesAndStoreToBucketAndUpdateToFirestore', upload.array('imag
                             body: JSON.stringify({
                                 "name": row["Product_Name"],
                                 "sku": row["Product_SKU"],
-                                "price": row["Product_Price"],
+                                "price": row["Price"],
                                 "image_url": row["Image_url"],
                                 "description": row["Product_Description"],
                                 "category": row["Product_Category"],
@@ -332,7 +354,7 @@ app.post('/uploadCSVandImages', upload.fields([{ name: 'csv', maxCount: 1 }, { n
                                 body: JSON.stringify({
                                     "name": row["Product_Name"],
                                     "sku": row["Product_SKU"],
-                                    "price": row["Product_Price"],
+                                    "price": row["Price"],
                                     "image_url": row["Image_url"],
                                     "description": row["Product_Description"],
                                     "category": row["Product_Category"],

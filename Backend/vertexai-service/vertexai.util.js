@@ -26,11 +26,15 @@ async function enhanceWithImage(product) {
   return formattedResponse;
 }
 
-async function provideReason(information, query) {
+async function provideReason(information, query, previousQuery) {
   const prompt = `
-      Below is the information from the discovery engine which it find which product is popular based on the query:
+      Below is the information from the discovery engine based on the query:
       ${JSON.stringify(information, null, 2)}
-      The query that the user is providing: "${query}"
+      Current User Query: ${query}\n
+      Previous Conversation:\n ${previousQuery.map((q, index) => {
+          return `${q.role}: ${q.text}\n`;
+      })}
+      The order of the previous conversation is important, so please keep it in mind. Top is oldest, bottom is latest.
     `;
 
   const result = await reasoningGenerativeModel.generateContent({
