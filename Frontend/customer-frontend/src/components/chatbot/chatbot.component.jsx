@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const chat = async (query) => {
 
-    let response = await fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/chat`, {
+    let response = await fetch(`/chat`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

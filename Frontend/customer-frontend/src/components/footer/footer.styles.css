@@ -1,0 +1,194 @@
+/* Basic Footer Styles */
+.cymbal-footer {
+  background-color: #222; /* Dark background */
+  color: #ccc; /* Light gray text */
+  padding: 40px 20px 20px; /* Top/bottom padding, side padding */
+  font-family: Arial, sans-serif; /* Readable font */
+  width: 100%;
+  border-top: 1px solid #333; /* Subtle top border */
+}
+
+.cymbal-footer-container {
+  display: flex; /* Use flexbox for sections */
+  flex-wrap: wrap; /* Allow sections to wrap on smaller screens */
+  justify-content: space-between; /* Distribute space between sections */
+  max-width: 1200px; /* Max width for content */
+  margin: 0 auto; /* Center the footer content */
+  gap: 30px; /* Space between flex items */
+}
+
+.cymbal-footer-section {
+  flex: 1; /* Allow sections to grow and shrink */
+  min-width: 200px; /* Minimum width before wrapping */
+  margin-bottom: 20px; /* Space between sections when stacked */
+}
+
+.cymbal-footer-section h3 {
+  color: #fff; /* White headings */
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle underline */
+  padding-bottom: 10px;
+}
+
+.cymbal-footer-section p {
+  font-size: 0.95em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Links Styling */
+.cymbal-footer-section ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0;
+  margin: 0;
+}
+
+.cymbal-footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.cymbal-footer-section ul li a {
+  color: #ccc; /* Light gray link color */
+  text-decoration: none; /* Remove underline */
+  font-size: 0.9em;
+  transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.cymbal-footer-section ul li a:hover {
+  color: #007bff; /* Highlight color on hover (e.g., a blue) */
+}
+
+/* Social Links */
+.social-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px; /* Space between social icons */
+}
+
+.social-links a {
+  color: #fff; /* White icons */
+  font-size: 1.5em; /* Size of icons */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-links a:hover {
+  color: #007bff; /* Highlight color on hover */
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Newsletter Form */
+.newsletter-form {
+  display: flex;
+  margin-top: 15px;
+  flex-wrap: wrap; /* Allow input and button to wrap */
+}
+
+.newsletter-form input[type="email"] {
+  flex-grow: 1; /* Input takes up available space */
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #333;
+  color: #eee;
+  margin-right: 10px;
+  margin-bottom: 10px; /* Space when wrapped */
+  max-width: 250px; /* Max width for input */
+}
+
+.newsletter-form button {
+  padding: 10px 15px;
+  background-color: #F28C28; /* orange subscribe button */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.newsletter-form button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Payment Icons */
+.payment-icons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px; /* Space between payment icons */
+  flex-wrap: wrap;
+}
+
+.payment-icons span {
+  font-size: 2.2em; /* Larger icons for payment methods */
+  color: #eee; /* Light color for payment icons */
+}
+
+/* Bottom Footer Section */
+.cymbal-footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #333; /* Separator line */
+  font-size: 0.85em;
+  color: #aaa; /* Slightly darker text for copyright */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .cymbal-footer-container {
+    flex-direction: column; /* Stack sections vertically on small screens */
+    align-items: center; /* Center items when stacked */
+    text-align: center;
+  }
+
+  .cymbal-footer-section {
+    min-width: unset; /* Remove min-width constraint */
+    width: 100%; /* Take full width */
+    max-width: 400px; /* Limit max width for readability */
+  }
+
+  .cymbal-footer-section h3 {
+    text-align: center; /* Center headings on small screens */
+  }
+
+  .cymbal-footer-section ul {
+    text-align: center; /* Center list items */
+  }
+
+  .social-links,
+  .newsletter-form,
+  .payment-icons {
+    justify-content: center; /* Center content within these groups */
+  }
+
+  .newsletter-form input[type="email"] {
+    margin-right: 0; /* Remove right margin when stacked */
+    margin-bottom: 10px;
+    width: 100%; /* Make input full width */
+    max-width: 300px; /* Adjust max width for smaller screens */
+  }
+
+  .newsletter-form button {
+    width: 100%; /* Make button full width */
+    max-width: 300px; /* Adjust max width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .cymbal-footer {
+    padding: 30px 15px 15px;
+  }
+
+  .cymbal-footer-container {
+    gap: 20px;
+  }
+
+  .cymbal-footer-section h3 {
+    font-size: 1.1em;
+  }
+
+  .social-links a,
+  .payment-icons span {
+    font-size: 1.3em;
+  }
+}

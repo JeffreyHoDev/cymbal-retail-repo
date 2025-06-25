@@ -13,7 +13,7 @@ const SearchResultsPage = () => {
             try {
                 setLoading(true);
                 // Assuming you have a function to fetch search results based on the query
-                let response = await fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/search`, {
+                let response = await fetch(`/search`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

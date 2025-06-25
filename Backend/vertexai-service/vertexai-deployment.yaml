@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: cymbal-retail-vertexai-service-deployment
-          image: your-image-name-or-registry-url
+          image: cymbal-retail-vertexai-service:v1
+          imagePullPolicy: Never # For local testing only
           ports:
             - containerPort: 3000
           env:

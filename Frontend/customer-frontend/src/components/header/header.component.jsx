@@ -1,5 +1,5 @@
 import './header.styles.css';
-
+import Cart from '../../images/shopping-cart.png';
 import SearchBar from '../searchbar/searchbar.component';
 import { NavLink } from 'react-router';
 
@@ -14,8 +14,10 @@ const Header = () => {
       <SearchBar />
       <nav className="header__nav">
         <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a >About</a></li>
+          <li><a >Contact</a></li>
+          <li><img src={Cart} alt="Cart" width="25px" /></li>
+          <li><a >Welcome, Christina!</a></li>
         </ul>
       </nav>
     </header>

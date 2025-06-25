@@ -17,7 +17,9 @@ export const AppProvider = ({ children }) => {
     // Fetch data or perform any setup when the component mounts
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/getProducts`);
+        // const response = await fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/getProducts`);
+          const url = `/getProducts`;
+          const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -38,7 +40,7 @@ export const AppProvider = ({ children }) => {
 
   const AISearch = async (query) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/search`, {
+      const response = await fetch(`/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

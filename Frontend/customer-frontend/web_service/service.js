@@ -4,12 +4,14 @@ const app = express();
 require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'build')));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 app.get('/getProducts', async (req, res) => {
     try {
+
         let response = await fetch(`${process.env.PRODUCT_SERVICE_URL}/getProducts`)
         let data = await response.json();
         res.json(data);
@@ -69,8 +71,7 @@ app.post('/search', async (req, res) => {
 });
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
 
 app.listen(80);

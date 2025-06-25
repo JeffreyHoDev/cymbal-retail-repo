@@ -1,0 +1,109 @@
+/* In ImageSlider.css */
+.slider-container {
+  /* Existing styles */
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; /* Still good for centering within its allocated flex space */
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* --- ADD/ADJUST THESE FLEXBOX-RELATED PROPERTIES --- */
+  flex-shrink: 0; /* Prevent it from shrinking */
+  /* Or: flex-grow: 0; */
+  /* Or: flex: 0 0 auto; (sets flex-grow, flex-shrink, flex-basis) */
+
+  /* Ensure it takes up its natural width/height or a defined one */
+  /* If width: 100%; is already there, that's often enough for width in a flex row */
+
+  /* For height, one of these might be needed: */
+  height: 400px; /* Example fixed height */
+  /* OR */
+  min-height: 300px; /* Ensure it has at least some height */
+  /* OR, if the parent defines height for its row/column */
+  /* align-self: flex-start; /* or center, stretch, etc. to prevent unwanted stretching/shrinking */
+}
+
+.slider-wrapper {
+  display: flex; /* Makes the images arrange in a row */
+  /* The transform property you already have will handle the sliding */
+  /* transform: `translateX(-${currentIndex * 100}%)`; */ 
+  transition: transform 0.5s ease-in-out; /* Add a smooth transition for the slide effect */
+  width: 100%; /* Or a fixed width for your slider container */
+}
+
+/* Also ensure images have proper sizing within their slides */
+.slider-slide img {
+  width: 100%;
+  height: 100%; /* Important if parent has height */
+  display: block;
+  object-fit: cover;
+}
+
+/* Ensure the slide itself has proper sizing */
+.slider-slide {
+  min-width: 100%;
+  height: 100%; /* Ensure slide fills container height */
+  box-sizing: border-box;
+}
+
+/* Slider Button Styling */
+.slider-button {
+  position: absolute; /* Position buttons relative to the closest positioned ancestor (.slider-container) */
+  top: 50%; /* Vertically center them */
+  transform: translateY(-50%); /* Adjust for perfect vertical centering */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  color: white; /* White arrow color */
+  border: none; /* No border */
+  padding: 10px 15px; /* Padding inside the button */
+  cursor: pointer; /* Indicate it's clickable */
+  font-size: 24px; /* Size of the arrow character */
+  z-index: 10; /* Ensure buttons are above the images */
+  border-radius: 5px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+  display: flex; /* Use flexbox to center the arrow icon */
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-button:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
+}
+
+.slider-button.prev {
+  left: 10px; /* Position the left button 10px from the left edge */
+}
+
+.slider-button.next {
+  right: 10px; /* Position the right button 10px from the right edge */
+}
+
+/* Slider Dots Styling */
+.slider-dots {
+  position: absolute;
+  bottom: 15px; /* Position dots 15px from the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+  display: flex; /* Arrange dots in a row */
+  gap: 8px; /* Space between dots */
+  z-index: 10; /* Ensure dots are above the images */
+}
+
+.slider-dot {
+  width: 10px; /* Size of the dot */
+  height: 10px; /* Size of the dot */
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white dot */
+  border-radius: 50%; /* Make it perfectly round */
+  cursor: pointer; /* Indicate it's clickable */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.slider-dot.active {
+  background-color: #ffffff; /* Solid white for the active dot */
+  transform: scale(1.2); /* Slightly larger for the active dot */
+}
+
+.slider-dot:hover {
+  background-color: #ffffff; /* Solid white on hover (even for inactive dots) */
+}

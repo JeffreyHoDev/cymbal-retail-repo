@@ -9,6 +9,8 @@ import accessoriesIcon from '../../images/accessories-icon.png';
 import drinkwareIcon from '../../images/drinkware-icon.png';
 import bagIcon from '../../images/icons8-bag-50.png';
 import shoesIcon from '../../images/icons8-shoes-50.png';
+import officeIcon from '../../images/office-icon.png';
+import sofaIcon from '../../images/sofa-icon.png';
 // import defaultIcon from '../../images/default-icon.png';
 
 const matchCategoryToImage = (category) => {
@@ -20,6 +22,8 @@ const matchCategoryToImage = (category) => {
     "Drinkware": drinkwareIcon,
     "Shoes": shoesIcon,
     "Bags": bagIcon,
+    "Office": officeIcon,
+    "Sofa": sofaIcon,
   }
   return object[category]  // Fallback to a default image if category not found
 }
@@ -38,19 +42,6 @@ const CategoryComponent = () => {
               Object.entries(products).map(([category, items], index) => {
                 return (
                   <NavLink to={`/category/${category}`} key={`${category}-${index}`}>
-                      {/* <Card className='category-card' key={`navigation-${category}-${index}`} sx={{ maxWidth: 345 }}>
-                          <CardMedia
-                              component="img"
-                              alt={`${category} image`}
-                              height="200"
-                              image={matchCategoryToImage(category)}
-                          />
-                          <CardContent>
-                              <Typography gutterBottom variant="h5" component="div">
-                                  {category}
-                              </Typography>
-                          </CardContent>
-                      </Card> */}
                     <div className="category-card" key={`navigation-${category}-${index}`}>
                       <img
                         src={matchCategoryToImage(category)}

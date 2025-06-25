@@ -185,24 +185,24 @@ app.post('/updateProduct', (req, res) => {
     });
 });
 
-app.post('/approveProduct', (req, res) => {
-    const { id, category } = req.body;
-    if (!id || !category) {
-        return res.status(400).json({ error: 'Product ID and category are required' });
-    }
-    // Here will need to update the product status to 'approved' in the database using id
-    req.body.status = 'approved'; // Update status to approved
-    const docRef = db.collection(category).doc(id);
-    docRef.set(req.body)
-    .then(() => {
-        res.json({
-            message: `Product ${id} approved successfully`,
-        });
-    })
-    .catch((error) => {
-        res.status(500).json({ error: 'Failed to approve product', details: error.message });
-    });
-})
+// app.post('/approveProduct', (req, res) => {
+//     const { id, category } = req.body;
+//     if (!id || !category) {
+//         return res.status(400).json({ error: 'Product ID and category are required' });
+//     }
+//     // Here will need to update the product status to 'approved' in the database using id
+//     req.body.status = 'approved'; // Update status to approved
+//     const docRef = db.collection(category).doc(id);
+//     docRef.set(req.body)
+//     .then(() => {
+//         res.json({
+//             message: `Product ${id} approved successfully`,
+//         });
+//     })
+//     .catch((error) => {
+//         res.status(500).json({ error: 'Failed to approve product', details: error.message });
+//     });
+// })
 
 
 app.post('/uploadCSV', upload.single('csv'), (req, res) => {

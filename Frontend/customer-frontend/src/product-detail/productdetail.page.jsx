@@ -8,12 +8,9 @@ const ProductDetailPage = () => {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        // Here you would typically fetch the product details based on category and productID
-        // For this dummy implementation, we are using a static product object
-        fetch(`${process.env.REACT_APP_PUBLIC_WEB_SERVICE_URL}/getSpecificProduct/${category}/${productID}`)
+        fetch(`/getSpecificProduct/${category}/${productID}`)
             .then(response => response.json())
             .then(data => {
-                console.log("Fetched product data:", data);
                 // Handle the fetched product data
                 setProduct(data.item);
             })
