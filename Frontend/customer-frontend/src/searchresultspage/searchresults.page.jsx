@@ -41,7 +41,6 @@ const SearchResultsPage = () => {
             {
                 loading ? <CircularProgress /> 
                 : searchResults.length > 0 ? (searchResults.map((product, index) => {
-                    console.log("Product:", product);
                     return (
                         <div key={index} className="product-card">
                             <img src={product.image_url[0]} alt={product.name} />

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cymbal-retail-product-service-deployment
-          image: cymbal-retail-product-service:v1
-          imagePullPolicy: Never # For local testing only
+          image: product-service:v1
+        # imagePullPolicy: Never # For local testing only
           ports:
             - containerPort: 3000
